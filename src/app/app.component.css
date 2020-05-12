@@ -1,0 +1,40 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+.container{
+    display: flex;
+}
+
+.container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.container-projects {
+    width: 20%;
+    margin: 0 0.5rem;
+    border: 1px solid rgb(224, 224, 224);
+}
+
+.container-projects h2 {
+    padding: 0;
+    margin: 0;
+    background: rgb(100, 100, 100);
+}
+
+.container li {
+    padding: 0.3rem;
+}
+
+.container-tasks {
+    width: 100%;
+    background-color: rgb(235, 235, 235);
+}
+
+.container-tasks h3 {
+    margin: 0;
+    padding: 0;
+}
