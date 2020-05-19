@@ -1,10 +1,11 @@
 <div class="container">
     <div class="container-projects">
-        <h2>Projetos</h2>
+        <div class="header-projects">
+            <h2>Projetos</h2>
+            <button (click)="newProject()">Novo</button>
+        </div>
         <ul>
-            <li>Projeto 01</li>
-            <li>Projeto 02</li>
-            <li>Projeto 03</li>
+            <li *ngFor="let project of projects">{{ project.name }}</li>
         </ul>
     </div>
     <div class="container-tasks">
