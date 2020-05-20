@@ -10,18 +10,17 @@ import { Project } from './project';
 export class AppComponent implements OnInit{
   title = 'todo';
   projects: Array<Project> = [];
+  showModal: boolean = false;
 
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
   ngOnInit():void {
     //this.indexedDBApiService.initialize();
     const p1 = <Project>{
-      name: 'Primeiro projeto',
-      date: new Date()
+      name: 'Primeiro projeto'
     }
     const p2: Project = {
-      name: 'Segundo projeto',
-      date: new Date()
+      name: 'Segundo projeto'
     }
 
     this.projects.push(p1);
@@ -29,6 +28,15 @@ export class AppComponent implements OnInit{
   }
 
   newProject(){
-    alert('Novo projeto');
+    this.showModal = true;
+  }
+
+  addNewProject(event){
+    this.projects.push(event);
+    this.hideModal();
+  }
+
+  hideModal(){
+    this.showModal = false;
   }
 }

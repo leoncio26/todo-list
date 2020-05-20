@@ -19,3 +19,9 @@
         </ul>
     </div>
 </div>
+
+<app-modal 
+    *ngIf="showModal"
+    (save)="addNewProject($event)"
+    (hideModal)="hideModal()">
+</app-modal>
