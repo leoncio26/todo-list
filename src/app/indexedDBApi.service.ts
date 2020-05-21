@@ -1,29 +1,30 @@
 import { Injectable } from '@angular/core';
+import { Database } from './database';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
     private database: IDBDatabase;
-    private dbName = 'projects';
-    private dbVersion = 2;
 
-    initialize(){
-        const open = indexedDB.open(this.dbName, this.dbVersion);
+    createIndexedDB(database: Database){
+        const db = indexedDB.open(database.name);
 
-        open.onsuccess = event => {
-            this.database = event.target['result'];
-            console.log(`Database ${this.database} aberto com sucesso`);
-
-           // this.saveIndexedDB({nome: 'Hello indexedDB!!!'});
-           this.clearIndexedDb();
+        db.onsuccess = (event:any) => {
+            this.database = event.target.result;
         }
 
-        open.onupgradeneeded = event => {
-            const database: IDBDatabase = event.target['result'];
+        db.onerror = event => {
+            alert(event.target['errorCode']);
+        }
 
-            const objectStore = database.createObjectStore("Tasks", {keyPath: 'id', autoIncrement: true});
+        db.onupgradeneeded = event => {
+            const db: IDBDatabase = event.target['result'];
 
-            objectStore.createIndex('nome', 'nome', {unique: false});
-            objectStore.createIndex('data', 'data', {unique: false});
+            database.storeObject.forEach(obj => {
+                const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
+            })
+
+            
+            //objectStore.createIndex('data', 'data', {unique: false});
         }
     }
 

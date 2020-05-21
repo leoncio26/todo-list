@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IndexedDBApiService } from './indexedDBApi.service';
 import { Project } from './project';
+import { Database } from './database';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,14 @@ export class AppComponent implements OnInit{
 
     this.projects.push(p1);
     this.projects.push(p2);
+
+    const database: Database = {
+      name: 'Projects',
+      storeObject: [<Project>{
+        name: 'Projeto IndexedDB'
+      }]
+    };
+    this.indexedDBApiService.createIndexedDB(database);
   }
 
   newProject(){
