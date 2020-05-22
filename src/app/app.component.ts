@@ -16,32 +16,24 @@ export class AppComponent implements OnInit{
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
   ngOnInit():void {
-    //this.indexedDBApiService.initialize();
-    const p1 = <Project>{
-      name: 'Primeiro projeto'
-    }
-    const p2: Project = {
-      name: 'Segundo projeto'
-    }
-
-    this.projects.push(p1);
-    this.projects.push(p2);
-
-    const database: Database = {
-      name: 'Projects',
-      storeObject: [<Project>{
-        name: 'Projeto IndexedDB'
-      }]
-    };
-    this.indexedDBApiService.createIndexedDB(database);
+    
   }
 
   newProject(){
     this.showModal = true;
   }
 
-  addNewProject(event){
-    this.projects.push(event);
+  addNewProject(event: Project){
+    const novoProject: Project = {
+      name: event.name,
+      dataCriacão: event.dataCriacão || new Date()
+    }; 
+    const database: Database = {
+      name: 'Projects',
+      storeObject: [novoProject], 
+      version: 3
+    };
+    this.indexedDBApiService.createIndexedDB(database);
     this.hideModal();
   }
 

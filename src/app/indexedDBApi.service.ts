@@ -3,13 +3,15 @@ import { Database } from './database';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
-    private database: IDBDatabase;
+
+    openDatabase(){}
 
     createIndexedDB(database: Database){
-        const db = indexedDB.open(database.name);
+        const db = indexedDB.open(database.name, database.version);
 
         db.onsuccess = (event:any) => {
-            this.database = event.target.result;
+            const d:IDBDatabase = event.target.result;
+            console.log(d.objectStoreNames);
         }
 
         db.onerror = event => {
@@ -21,6 +23,8 @@ export class IndexedDBApiService {
 
             database.storeObject.forEach(obj => {
                 const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
+
+                const request = objectStore.add(obj);
             })
 
             
@@ -29,20 +33,32 @@ export class IndexedDBApiService {
     }
 
     clearIndexedDb(){
-        const transaction = this.database.transaction('Tasks', 'readwrite');
+        
+
+        //const transaction = this.database.transaction('Tasks', 'readwrite');
 
         //Obtem o objeto criado no database
-        const objectStore = transaction.objectStore('Tasks');
+        //const objectStore = transaction.objectStore('Tasks');
 
-        const request = objectStore.clear();
+        //const request = objectStore.clear();
 
-        request.onsuccess = event => {
-            alert('Limpeza realizada com sucesso');
-        }
+        //request.onsuccess = event => {
+        //    alert('Limpeza realizada com sucesso');
+        //}
     }
 
-    saveIndexedDB(task) {
-        const transaction = this.database.transaction('Tasks', 'readwrite');
+    saveIndexedDB(newData) {
+        const db = indexedDB.open('Projects');
+
+        db.onsuccess = (event: any) => {
+            const result = event.target.result;
+            const transaction = result.transaction([newData.name], 'readwrite')
+
+            const objectStore = transaction.objectStore(newData.name);
+            const request = objectStore.add(newData);
+        }
+
+        /*const transaction = db.transaction('Tasks', 'readwrite');
 
         const objectStore = transaction.objectStore('Tasks');
 
@@ -55,9 +71,9 @@ export class IndexedDBApiService {
             task.id = event.target['result'];
             item.push(task);
 
-        }
+        }*/
     }
-
+    /*
     getAllIndexedDB() {
         const tasks = [];
 
@@ -98,5 +114,5 @@ export class IndexedDBApiService {
         request.onsuccess = event => {
             console.log('Item removido com sucesso');
         }
-    }
+    }*/
 }
