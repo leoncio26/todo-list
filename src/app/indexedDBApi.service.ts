@@ -4,10 +4,35 @@ import { Database } from './database';
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
 
-    openDatabase(){}
+    async openDatabase(database: Database){
+        return new Promise((resolve, reject) => {
+            const open = indexedDB.open(database.name, database.version);
+            open.onsuccess = (event: any) => {
+                resolve(<IDBDatabase>event.target.result);
+            }
 
-    createIndexedDB(database: Database){
-        const db = indexedDB.open(database.name, database.version);
+            open.onupgradeneeded = (event: any) => {
+                const db: IDBDatabase = event.target.result;
+                
+                db.createObjectStore(database.storeObject.name);
+
+                /*database.storesObject.forEach(obj => {
+                    const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
+    
+                    const request = objectStore.add(obj);
+                })*/
+            }
+
+            open.onerror = (event:any) => {
+                return event;
+            }
+        });
+    }
+
+    createStoreObject(database: IDBDatabase, name: string){
+        database.createObjectStore(name);
+
+        /*const db = indexedDB.open(database.name, database.version);
 
         db.onsuccess = (event:any) => {
             const d:IDBDatabase = event.target.result;
@@ -21,7 +46,7 @@ export class IndexedDBApiService {
         db.onupgradeneeded = event => {
             const db: IDBDatabase = event.target['result'];
 
-            database.storeObject.forEach(obj => {
+            database.storesObject.forEach(obj => {
                 const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
 
                 const request = objectStore.add(obj);
@@ -29,7 +54,7 @@ export class IndexedDBApiService {
 
             
             //objectStore.createIndex('data', 'data', {unique: false});
-        }
+        }*/
     }
 
     clearIndexedDb(){

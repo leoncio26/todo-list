@@ -12,11 +12,23 @@ export class AppComponent implements OnInit{
   title = 'todo';
   projects: Array<Project> = [];
   showModal: boolean = false;
+  database: IDBDatabase;
 
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
   ngOnInit():void {
-    
+    const database: Database = {
+      name: 'Projects'
+    }
+    this.indexedDBApiService.openDatabase(database).then((db: IDBDatabase) => {
+      this.database = db;
+
+      const projetctsByObjectStoresNames = Array.from(this.database.objectStoreNames);
+      
+      projetctsByObjectStoresNames.forEach(name => {
+        this.projects.push({name});
+      });
+    })
   }
 
   newProject(){
@@ -24,16 +36,30 @@ export class AppComponent implements OnInit{
   }
 
   addNewProject(event: Project){
-    const novoProject: Project = {
+    const database: Database = {
+      name: 'Projects',
+      storeObject: event
+    }
+
+    database.version = this.database.version + 1;
+    this.database.close();
+    
+    this.indexedDBApiService.openDatabase(database).then((db:IDBDatabase) => {
+      this.database = db;
+      this.projects.push(event);
+    });
+    
+
+    /*const novoProject: Project = {
       name: event.name,
       dataCriacão: event.dataCriacão || new Date()
     }; 
     const database: Database = {
       name: 'Projects',
-      storeObject: [novoProject], 
+      storesObject: [novoProject], 
       version: 3
     };
-    this.indexedDBApiService.createIndexedDB(database);
+    this.indexedDBApiService.createIndexedDB(database);*/
     this.hideModal();
   }
 

@@ -5,7 +5,10 @@
             <button (click)="newProject()">Novo</button>
         </div>
         <ul>
-            <li *ngFor="let project of projects">{{ project.name }}</li>
+            <li *ngFor="let project of projects">
+                {{ project.name }}
+                <button>Editar</button>
+            </li>
         </ul>
     </div>
     <div class="container-tasks">
