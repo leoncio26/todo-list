@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IndexedDBApiService } from './indexedDBApi.service';
-import { Project } from './project';
-import { Database } from './database';
+import { Project } from './models/project';
+import { Database } from './models/database';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,15 @@ import { Database } from './database';
 export class AppComponent implements OnInit{
   title = 'todo';
   projects: Array<Project> = [];
-  showModal: boolean = false;
+  showProjectForm: boolean = false;
   database: IDBDatabase;
+  selectedProject: Project;
+  formMode: string;
 
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
   ngOnInit():void {
+    this.selectedProject = {name: ''}
     const database: Database = {
       name: 'Projects'
     }
@@ -32,7 +35,8 @@ export class AppComponent implements OnInit{
   }
 
   newProject(){
-    this.showModal = true;
+    this.formMode = 'inserir';
+    this.showProjectForm = true;
   }
 
   addNewProject(event: Project){
@@ -44,10 +48,14 @@ export class AppComponent implements OnInit{
     database.version = this.database.version + 1;
     this.database.close();
     
-    this.indexedDBApiService.openDatabase(database).then((db:IDBDatabase) => {
-      this.database = db;
-      this.projects.push(event);
-    });
+    this.indexedDBApiService.openDatabase(database)
+      .then((db:IDBDatabase) => {
+        this.database = db;
+        this.projects.push(event);
+      })
+      .catch(error => {
+        alert(error.errorMessage);
+      });
     
 
     /*const novoProject: Project = {
@@ -63,7 +71,14 @@ export class AppComponent implements OnInit{
     this.hideModal();
   }
 
+  editProject(event: Project){
+    this.formMode = 'editar'
+    this.selectedProject = event;
+    this.showProjectForm = true;
+  }
+
   hideModal(){
-    this.showModal = false;
+    this.selectedProject = {name: ''};
+    this.showProjectForm = false;
   }
 }

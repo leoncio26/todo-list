@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Database } from './database';
+import { Database } from './models/database';
+import { error } from '@angular/compiler/src/util';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
@@ -14,7 +15,11 @@ export class IndexedDBApiService {
             open.onupgradeneeded = (event: any) => {
                 const db: IDBDatabase = event.target.result;
                 
-                db.createObjectStore(database.storeObject.name);
+                if(!database.storeObject.name) return;
+                if(!db.objectStoreNames.contains(database.storeObject.name)) 
+                    db.createObjectStore(database.storeObject.name);
+                else
+                    reject({errorMessage: `${database.storeObject.name} já existe!`});
 
                 /*database.storesObject.forEach(obj => {
                     const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
@@ -24,7 +29,7 @@ export class IndexedDBApiService {
             }
 
             open.onerror = (event:any) => {
-                return event;
+                reject(event);
             }
         });
     }

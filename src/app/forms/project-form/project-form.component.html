@@ -2,11 +2,11 @@
   <h3>Novo Projeto</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"> 
     <label>
-      Nome<input formControlName="name" type="text">
+      Nome<input formControlName="name" type="text" [value]="selectedProject.name">
     </label>
     <div>
       <button (click)="onCancel($event)">Cancelar</button>
-      <button type="submit">Inserir</button>
+      <button type="submit">Salvar</button>
     </div>
   </form>
 </div>

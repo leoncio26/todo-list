@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ModalComponent } from './modal/modal.component';
+import { ProjectFormComponent } from './forms/project-form/project-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalComponent
+    ProjectFormComponent
   ],
   imports: [
     ReactiveFormsModule,
