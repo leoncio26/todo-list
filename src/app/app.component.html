@@ -8,6 +8,7 @@
             <li *ngFor="let project of projects">
                 {{ project.name }}
                 <button (click)="editProject(project)">Editar</button>
+                <button (click)="deleteProject(project)">Excluir</button>
             </li>
         </ul>
     </div>
@@ -25,8 +26,7 @@
 
 <app-project-form 
     *ngIf="showProjectForm"
-    [mode]="formMode"
     [selectedProject]="selectedProject"
-    (save)="addNewProject($event)"
+    (save)="saveProject($event)"
     (hideModal)="hideModal()">
 </app-project-form>

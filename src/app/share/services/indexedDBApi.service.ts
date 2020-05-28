@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Database } from './models/database';
+import { Database } from '../../models/database';
 import { error } from '@angular/compiler/src/util';
 
 @Injectable({providedIn: "root"})
@@ -16,10 +16,13 @@ export class IndexedDBApiService {
                 const db: IDBDatabase = event.target.result;
                 
                 if(!database.storeObject.name) return;
-                if(!db.objectStoreNames.contains(database.storeObject.name)) 
+                if(!db.objectStoreNames.contains(database.storeObject.name) && database.storeObject.oldName == undefined) 
                     db.createObjectStore(database.storeObject.name);
-                else
-                    reject({errorMessage: `${database.storeObject.name} já existe!`});
+                else{
+                    db.deleteObjectStore(database.storeObject.oldName);
+                    db.createObjectStore(database.storeObject.name);
+                    //reject({errorMessage: `${database.storeObject.name} já existe!`});
+                }
 
                 /*database.storesObject.forEach(obj => {
                     const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
@@ -32,34 +35,6 @@ export class IndexedDBApiService {
                 reject(event);
             }
         });
-    }
-
-    createStoreObject(database: IDBDatabase, name: string){
-        database.createObjectStore(name);
-
-        /*const db = indexedDB.open(database.name, database.version);
-
-        db.onsuccess = (event:any) => {
-            const d:IDBDatabase = event.target.result;
-            console.log(d.objectStoreNames);
-        }
-
-        db.onerror = event => {
-            alert(event.target['errorCode']);
-        }
-
-        db.onupgradeneeded = event => {
-            const db: IDBDatabase = event.target['result'];
-
-            database.storesObject.forEach(obj => {
-                const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
-
-                const request = objectStore.add(obj);
-            })
-
-            
-            //objectStore.createIndex('data', 'data', {unique: false});
-        }*/
     }
 
     clearIndexedDb(){
