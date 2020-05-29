@@ -46,3 +46,8 @@ html, body {
     display: flex;
     justify-content: space-between;
 }
+
+.project-name:hover {
+    background-color: silver;
+    cursor: pointer;
+}
