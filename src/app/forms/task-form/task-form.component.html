@@ -1,0 +1,12 @@
+<div class="modal-container">
+  <h3>Nova Tarefa</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"> 
+    <label>
+      Nome<input formControlName="name" type="text">
+    </label>
+    <div>
+      <button (click)="onCancel($event)">Cancelar</button>
+      <button type="submit">Salvar</button>
+    </div>
+  </form>
+</div>

@@ -4,11 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ProjectFormComponent } from './forms/project-form/project-form.component';
+import { TaskFormComponent } from './forms/task-form/task-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProjectFormComponent
+    ProjectFormComponent,
+    TaskFormComponent
   ],
   imports: [
     ReactiveFormsModule,

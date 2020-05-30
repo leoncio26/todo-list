@@ -11,7 +11,7 @@ export class ProjectFormComponent implements OnInit {
   @Input() selectedProject: Project;
   @Input() mode: string;
 
-  @Output() hideModal = new EventEmitter();
+  @Output() hideForm = new EventEmitter();
   @Output() save = new EventEmitter();
 
   form: FormGroup;
@@ -32,7 +32,7 @@ export class ProjectFormComponent implements OnInit {
   onCancel(event){
     event.preventDefault();
     this.form.reset();
-    this.hideModal.emit(null);
+    this.hideForm.emit(null);
   }
 
 }

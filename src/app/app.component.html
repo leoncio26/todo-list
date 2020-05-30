@@ -15,11 +15,11 @@
     <div class="container-tasks">
         <h3>{{ selectedProjectName }}</h3>
         <ul>
-            <li>Tarefa 01</li>
-            <li>Tarefa 02</li>
-            <li>Tarefa 03</li>
-            <li>Tarefa 04</li>
-            <li>Tarefa 05</li>
+            <li *ngFor="let task of tasks">
+                {{ task.name }}
+            </li>
+            
+            <button (click)="newTask()">Nova tarefa</button>
         </ul>
     </div>
 </div>
@@ -28,5 +28,11 @@
     *ngIf="showProjectForm"
     [selectedProject]="selectedProject"
     (save)="saveProject($event)"
-    (hideModal)="hideModal()">
+    (hideForm)="hideForm()">
 </app-project-form>
+
+<app-task-form 
+    *ngIf="showTaskForm"
+    (save)="saveTask($event)"
+    (hideForm)="hideForm()">
+</app-task-form>

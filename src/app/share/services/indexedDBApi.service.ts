@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Database } from '../../models/database';
-import { error } from '@angular/compiler/src/util';
 import { DatabaseMode } from 'src/app/models/enums/database-mode';
+import { SaveObjectStore } from 'src/app/models/objectStore';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
@@ -20,14 +20,14 @@ export class IndexedDBApiService {
 
                 if(database.mode == DatabaseMode.Insert) {
                     if(!db.objectStoreNames.contains(database.storeObject.name))
-                        db.createObjectStore(database.storeObject.name);
+                        db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
                     else
                         reject({errorMessage: 'Existe projeto com esse nome.'});
                 }
                 else if(database.mode == DatabaseMode.Edit){
                     db.deleteObjectStore(database.storeObject.oldName);
                     if(!db.objectStoreNames.contains(database.storeObject.name))
-                        db.createObjectStore(database.storeObject.name);
+                        db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
                     else
                         reject({errorMessage: 'Existe projeto com esse nome.'});
                 }else{
@@ -62,16 +62,11 @@ export class IndexedDBApiService {
         //}
     }
 
-    saveIndexedDB(newData) {
-        const db = indexedDB.open('Projects');
-
-        db.onsuccess = (event: any) => {
-            const result = event.target.result;
-            const transaction = result.transaction([newData.name], 'readwrite')
-
-            const objectStore = transaction.objectStore(newData.name);
-            const request = objectStore.add(newData);
-        }
+    saveDObjectStore(data: SaveObjectStore) {
+        const db = data.database;
+        const transaction = db.transaction([data.objectStoreName], 'readwrite');
+        const objectStore = transaction.objectStore(data.objectStoreName);
+        objectStore.add(data.ObjectStore);
 
         /*const transaction = db.transaction('Tasks', 'readwrite');
 

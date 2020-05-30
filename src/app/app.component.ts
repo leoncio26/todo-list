@@ -3,6 +3,8 @@ import { IndexedDBApiService } from './share/services/indexedDBApi.service';
 import { Project } from './models/project';
 import { Database } from './models/database';
 import { DatabaseMode } from './models/enums/database-mode';
+import { Task } from './models/task';
+import { SaveObjectStore } from './models/objectStore';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,9 @@ import { DatabaseMode } from './models/enums/database-mode';
 export class AppComponent implements OnInit{
   title = 'todo';
   projects: Array<Project> = [];
+  tasks: Array<Task> = [];
   showProjectForm: boolean = false;
+  showTaskForm: boolean = false;
   database: IDBDatabase;
   selectedProject: Project;
   oldProjectName: string;
@@ -41,6 +45,10 @@ export class AppComponent implements OnInit{
   newProject(){
     this.showProjectForm = true;
     this.databaseMode = DatabaseMode.Insert
+  }
+
+  newTask(){
+    this.showTaskForm = true;
   }
 
   editProject(event: Project){
@@ -82,7 +90,18 @@ export class AppComponent implements OnInit{
       .catch(error => {
         alert(error.errorMessage);
       });
-    this.hideModal();
+    this.hideForm();
+  }
+
+  saveTask(event: Task) {
+    const saveObjectStore: SaveObjectStore = {
+      database: this.database,
+      objectStoreName: this.selectedProjectName,
+      ObjectStore: event
+    }
+    this.indexedDBApiService.saveDObjectStore(saveObjectStore);
+    this.tasks.push(event);
+    this.hideForm();
   }
 
   showTasksOfProject(event: Project) {
@@ -90,8 +109,9 @@ export class AppComponent implements OnInit{
     this.selectedProjectName = event.name;
   }
 
-  hideModal(){
+  hideForm(){
     this.selectedProject = {name: ''};
     this.showProjectForm = false;
+    this.showTaskForm = false;
   }
 }
