@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
   showTaskForm: boolean = false;
   database: IDBDatabase;
   selectedProject: Project;
+  selectedTask: Task;
   oldProjectName: string;
   databaseMode: DatabaseMode;
   selectedProjectName: string;
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit{
   ngOnInit():void {
     this.selectedProjectName = 'Tarefas do projeto';
     this.selectedProject = {name: ''}
+    this.selectedTask = {name: ''};
     const database: Database = {
       name: 'Projects'
     }
@@ -49,6 +51,7 @@ export class AppComponent implements OnInit{
 
   newTask(){
     this.showTaskForm = true;
+    this.databaseMode = DatabaseMode.Insert
   }
 
   editProject(event: Project){
@@ -99,14 +102,35 @@ export class AppComponent implements OnInit{
       objectStoreName: this.selectedProjectName,
       ObjectStore: event
     }
-    this.indexedDBApiService.saveDObjectStore(saveObjectStore);
-    this.tasks.push(event);
+
+    if(this.databaseMode == DatabaseMode.Insert){
+      this.indexedDBApiService.saveObjectStore(saveObjectStore);
+      this.tasks.push(event);
+    }else if(this.databaseMode == DatabaseMode.Edit){
+      this.indexedDBApiService.edit(saveObjectStore);
+    }
+    
     this.hideForm();
+    this.databaseMode = 0;
+  }
+
+  editTask(event: Task){
+    this.showTaskForm = true;
+    this.selectedTask = event;
+    this.databaseMode = DatabaseMode.Edit;
   }
 
   showTasksOfProject(event: Project) {
     this.selectedProject = event;
     this.selectedProjectName = event.name;
+    const saveObjectStore: SaveObjectStore = {
+      database: this.database,
+      objectStoreName: this.selectedProjectName
+    }
+
+    this.indexedDBApiService.getAll(saveObjectStore).then((tasks: any) => {
+      this.tasks = tasks
+    });
   }
 
   hideForm(){

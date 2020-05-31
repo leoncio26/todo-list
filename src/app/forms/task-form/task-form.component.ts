@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Task } from 'src/app/models/task';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -8,19 +8,23 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./task-form.component.css']
 })
 export class TaskFormComponent implements OnInit {
-  form: FormGroup;
+  @Input() selectedTask: Task;
+
   @Output() save = new EventEmitter();
   @Output() hideForm = new EventEmitter();
+  
+  form: FormGroup;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      name: ''
+      name: [this.selectedTask.name]
     });
   }
 
   onSubmit(event: Task){
-    this.save.emit(event);
+    this.selectedTask.name = event.name;
+    this.save.emit(this.selectedTask);
     this.form.reset();
   }
 

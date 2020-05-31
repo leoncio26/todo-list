@@ -2,7 +2,7 @@
   <h3>Nova Tarefa</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"> 
     <label>
-      Nome<input formControlName="name" type="text">
+      Nome<input formControlName="name" type="text" [value]="selectedTask.name">
     </label>
     <div>
       <button (click)="onCancel($event)">Cancelar</button>
