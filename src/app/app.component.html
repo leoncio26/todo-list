@@ -18,6 +18,7 @@
             <li *ngFor="let task of tasks">
                 {{ task.name }}
                 <button (click)="editTask(task)">Editar</button>
+                <button (click)="excluirTask(task)">Excluir</button>
             </li>
             
             <button (click)="newTask()">Nova tarefa</button>

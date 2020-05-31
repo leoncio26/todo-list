@@ -120,6 +120,19 @@ export class AppComponent implements OnInit{
     this.databaseMode = DatabaseMode.Edit;
   }
 
+  excluirTask(event: Task){
+    const saveObjectStore: SaveObjectStore = {
+      database: this.database,
+      objectStoreName: this.selectedProjectName,
+      ObjectStore: event
+    }
+    this.indexedDBApiService.delete(saveObjectStore)
+      .then(r => {
+        const id = this.tasks.findIndex(t => t.id == event.id);
+        if(id != -1) this.tasks.splice(id, 1);
+      });
+  }
+
   showTasksOfProject(event: Project) {
     this.selectedProject = event;
     this.selectedProjectName = event.name;

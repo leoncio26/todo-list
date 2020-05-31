@@ -84,6 +84,19 @@ export class IndexedDBApiService {
         })
     }
 
+    delete(data: SaveObjectStore){
+        return new Promise((resolve, reject) => {
+            const db = data.database;
+            const transaction = db.transaction([data.objectStoreName], 'readwrite');
+            const objectStore = transaction.objectStore(data.objectStoreName);
+            const request = objectStore.delete(data.ObjectStore.id);
+
+            request.onsuccess = (event: any) => {
+                resolve(event.target.result);
+            }
+        });
+    }
+
     clearIndexedDb(){
         
 
