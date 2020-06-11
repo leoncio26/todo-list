@@ -1,4 +1,4 @@
-<div class="modal-container">
+<!--<div class="modal-container">
   <h3>Novo Projeto</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"> 
     <label>
@@ -9,4 +9,13 @@
       <button type="submit">Salvar</button>
     </div>
   </form>
-</div>
+</div>-->
+
+<app-basic-form 
+  [title]="title"
+  [fields]="fields"
+  [data]="data"
+  (onCanceled)="onCancel()"
+  (onSave)="onSubmit($event)"
+  >
+</app-basic-form>

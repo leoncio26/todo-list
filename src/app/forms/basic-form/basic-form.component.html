@@ -1,0 +1,12 @@
+<div class="modal-container">
+  <h3>{{ title }}</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"> 
+    <label *ngFor="let field of fields">
+      {{ field.label }}<input [formControlName]="field.name" type="text">
+    </label>
+    <div>
+      <button (click)="onCancel($event)">Cancelar</button>
+      <button type="submit">Salvar</button>
+    </div>
+  </form>
+</div>

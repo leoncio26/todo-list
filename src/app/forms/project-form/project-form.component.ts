@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Project } from 'src/app/models/project';
+import { Field } from 'src/app/models/field';
 
 @Component({
   selector: 'app-project-form',
@@ -8,30 +9,31 @@ import { Project } from 'src/app/models/project';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
-  @Input() selectedProject: Project;
   @Input() mode: string;
+  @Input() data: any;
 
   @Output() hideForm = new EventEmitter();
   @Output() save = new EventEmitter();
 
-  form: FormGroup;
+  fields: Field[];
+  title: string;
   
-  constructor(private fb: FormBuilder) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      name: [this.selectedProject.name]
-    });
+    this.fields = [{
+      name: 'name',
+      label: 'Nome'
+    }]
+
+    this.title = 'Nova tarefa';
   }
 
   onSubmit(event){
     this.save.emit(event);
-    this.form.reset();
   }
 
-  onCancel(event){
-    event.preventDefault();
-    this.form.reset();
+  onCancel(){
     this.hideForm.emit(null);
   }
 

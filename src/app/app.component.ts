@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   showTaskForm: boolean = false;
   database: IDBDatabase;
   selectedProject: Project;
-  selectedTask: Task;
+  selectedTask: any;
   oldProjectName: string;
   databaseMode: DatabaseMode;
   selectedProjectName: string;
@@ -108,6 +108,8 @@ export class AppComponent implements OnInit{
       this.tasks.push(event);
     }else if(this.databaseMode == DatabaseMode.Edit){
       this.indexedDBApiService.edit(saveObjectStore);
+      const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
+      this.tasks[searchTaskId] = event;
     }
     
     this.hideForm();

@@ -28,14 +28,14 @@
 
 <app-project-form 
     *ngIf="showProjectForm"
-    [selectedProject]="selectedProject"
+    [data]="selectedProject"
     (save)="saveProject($event)"
     (hideForm)="hideForm()">
 </app-project-form>
 
 <app-task-form 
     *ngIf="showTaskForm"
-    [selectedTask]="selectedTask"
+    [data]="selectedTask"
     (save)="saveTask($event)"
     (hideForm)="hideForm()">
 </app-task-form>
