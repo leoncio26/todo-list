@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Database } from '../../models/database';
 import { DatabaseMode } from 'src/app/models/enums/database-mode';
-import { SaveObjectStore } from 'src/app/models/objectStore';
+import { IndexedDBObject } from 'src/app/models/indexedDBObject';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
-
     async openDatabase(database: Database){
         return new Promise((resolve, reject) => {
             const open = indexedDB.open(database.name, database.version);
@@ -33,12 +32,6 @@ export class IndexedDBApiService {
                 }else{
                     db.deleteObjectStore(database.storeObject.name);
                 }
-
-                /*database.storesObject.forEach(obj => {
-                    const objectStore = db.createObjectStore(obj.name, {keyPath: 'id', autoIncrement: true});  
-    
-                    const request = objectStore.add(obj);
-                })*/
             }
 
             open.onerror = (event:any) => {
@@ -47,7 +40,7 @@ export class IndexedDBApiService {
         });
     }
 
-    getAll(data: SaveObjectStore){
+    getAll(data: IndexedDBObject){
         return new Promise((resolve, reject) => {
             const db = data.database;
             const transaction = db.transaction(data.objectStoreName);
@@ -64,14 +57,14 @@ export class IndexedDBApiService {
         })
     }
 
-    saveObjectStore(data: SaveObjectStore) {
+    add(data: IndexedDBObject) {
         const db = data.database;
         const transaction = db.transaction([data.objectStoreName], 'readwrite');
         const objectStore = transaction.objectStore(data.objectStoreName);
         objectStore.add(data.ObjectStore);
     }
     
-    edit(data: SaveObjectStore){
+    put(data: IndexedDBObject){
         return new Promise((resolve, reject) => {
             const db = data.database;
             const transaction = db.transaction([data.objectStoreName], 'readwrite');
@@ -84,7 +77,7 @@ export class IndexedDBApiService {
         })
     }
 
-    delete(data: SaveObjectStore){
+    delete(data: IndexedDBObject){
         return new Promise((resolve, reject) => {
             const db = data.database;
             const transaction = db.transaction([data.objectStoreName], 'readwrite');
@@ -95,20 +88,5 @@ export class IndexedDBApiService {
                 resolve(event.target.result);
             }
         });
-    }
-
-    clearIndexedDb(){
-        
-
-        //const transaction = this.database.transaction('Tasks', 'readwrite');
-
-        //Obtem o objeto criado no database
-        //const objectStore = transaction.objectStore('Tasks');
-
-        //const request = objectStore.clear();
-
-        //request.onsuccess = event => {
-        //    alert('Limpeza realizada com sucesso');
-        //}
     }
 }

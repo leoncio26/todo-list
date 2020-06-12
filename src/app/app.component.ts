@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IndexedDBApiService } from './share/services/indexedDBApi.service';
+import { IndexedDBApiService } from './shared/services/indexedDBApi.service';
 import { Project } from './models/project';
 import { Database } from './models/database';
 import { DatabaseMode } from './models/enums/database-mode';
 import { Task } from './models/task';
-import { SaveObjectStore } from './models/objectStore';
+import { IndexedDBObject } from './models/indexedDBObject';
 
 @Component({
   selector: 'app-root',
@@ -97,17 +97,17 @@ export class AppComponent implements OnInit{
   }
 
   saveTask(event: Task) {
-    const saveObjectStore: SaveObjectStore = {
+    const saveObjectStore: IndexedDBObject = {
       database: this.database,
       objectStoreName: this.selectedProjectName,
       ObjectStore: event
     }
 
     if(this.databaseMode == DatabaseMode.Insert){
-      this.indexedDBApiService.saveObjectStore(saveObjectStore);
+      this.indexedDBApiService.add(saveObjectStore);
       this.tasks.push(event);
     }else if(this.databaseMode == DatabaseMode.Edit){
-      this.indexedDBApiService.edit(saveObjectStore);
+      this.indexedDBApiService.put(saveObjectStore);
       const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
       this.tasks[searchTaskId] = event;
     }
@@ -123,12 +123,12 @@ export class AppComponent implements OnInit{
   }
 
   excluirTask(event: Task){
-    const saveObjectStore: SaveObjectStore = {
+    const indexedDBObject: IndexedDBObject = {
       database: this.database,
       objectStoreName: this.selectedProjectName,
       ObjectStore: event
     }
-    this.indexedDBApiService.delete(saveObjectStore)
+    this.indexedDBApiService.delete(indexedDBObject)
       .then(r => {
         const id = this.tasks.findIndex(t => t.id == event.id);
         if(id != -1) this.tasks.splice(id, 1);
@@ -138,12 +138,12 @@ export class AppComponent implements OnInit{
   showTasksOfProject(event: Project) {
     this.selectedProject = event;
     this.selectedProjectName = event.name;
-    const saveObjectStore: SaveObjectStore = {
+    const indexedDBObject: IndexedDBObject = {
       database: this.database,
       objectStoreName: this.selectedProjectName
     }
 
-    this.indexedDBApiService.getAll(saveObjectStore).then((tasks: any) => {
+    this.indexedDBApiService.getAll(indexedDBObject).then((tasks: any) => {
       this.tasks = tasks
     });
   }
