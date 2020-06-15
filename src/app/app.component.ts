@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IndexedDBApiService } from './shared/services/indexedDBApi.service';
 import { Project } from './models/project';
 import { Database } from './models/database';
-import { DatabaseMode } from './models/enums/database-mode';
+import { Mode } from './models/enums/mode';
 import { Task } from './models/task';
 import { IndexedDBObject } from './models/indexedDBObject';
 
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit{
   selectedProject: Project;
   selectedTask: any;
   oldProjectName: string;
-  databaseMode: DatabaseMode;
+  mode: Mode;
   selectedProjectName: string;
 
   constructor(private indexedDBApiService: IndexedDBApiService){}
@@ -46,32 +46,32 @@ export class AppComponent implements OnInit{
 
   newProject(){
     this.showProjectForm = true;
-    this.databaseMode = DatabaseMode.Insert
+    this.mode = Mode.Insert
   }
 
   newTask(){
     this.showTaskForm = true;
-    this.databaseMode = DatabaseMode.Insert
+    this.mode = Mode.Insert
   }
 
   editProject(event: Project){
     this.selectedProject = event;
     this.oldProjectName = event.name;
     this.showProjectForm = true;
-    this.databaseMode = DatabaseMode.Edit;
+    this.mode = Mode.Edit;
   }
 
   deleteProject(event: Project){
-    this.databaseMode = DatabaseMode.Delete;
+    this.mode = Mode.Delete;
     this.saveProject(event);
   }
 
   saveProject(event: Project){
-    if(this.databaseMode == DatabaseMode.Edit) event.oldName = this.oldProjectName
+    if(this.mode == Mode.Edit) event.oldName = this.oldProjectName
     const database: Database = {
       name: 'Projects',
       storeObject: event,
-      mode: this.databaseMode
+      mode: this.mode
     }
 
     database.version = this.database.version + 1;
@@ -80,9 +80,9 @@ export class AppComponent implements OnInit{
     this.indexedDBApiService.openDatabase(database)
       .then((db:IDBDatabase) => {
         this.database = db;
-        if(this.databaseMode == DatabaseMode.Insert){
+        if(this.mode == Mode.Insert){
           this.projects.push(event);
-        }else if(this.databaseMode == DatabaseMode.Edit){
+        }else if(this.mode == Mode.Edit){
           const deleteNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
           if(deleteNameProjectIndex != -1) this.projects[deleteNameProjectIndex].name = event.name;
         }else{
@@ -103,23 +103,23 @@ export class AppComponent implements OnInit{
       ObjectStore: event
     }
 
-    if(this.databaseMode == DatabaseMode.Insert){
+    if(this.mode == Mode.Insert){
       this.indexedDBApiService.add(saveObjectStore);
       this.tasks.push(event);
-    }else if(this.databaseMode == DatabaseMode.Edit){
+    }else if(this.mode == Mode.Edit){
       this.indexedDBApiService.put(saveObjectStore);
       const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
       this.tasks[searchTaskId] = event;
     }
     
     this.hideForm();
-    this.databaseMode = 0;
+    this.mode = 0;
   }
 
   editTask(event: Task){
     this.showTaskForm = true;
     this.selectedTask = event;
-    this.databaseMode = DatabaseMode.Edit;
+    this.mode = Mode.Edit;
   }
 
   excluirTask(event: Task){

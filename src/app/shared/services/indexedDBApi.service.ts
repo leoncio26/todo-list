@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Database } from '../../models/database';
-import { DatabaseMode } from 'src/app/models/enums/database-mode';
+import { Mode } from 'src/app/models/enums/mode';
 import { IndexedDBObject } from 'src/app/models/indexedDBObject';
 
 @Injectable({providedIn: "root"})
@@ -17,13 +17,13 @@ export class IndexedDBApiService {
                 
                 if(!database.storeObject.name) return;
 
-                if(database.mode == DatabaseMode.Insert) {
+                if(database.mode == Mode.Insert) {
                     if(!db.objectStoreNames.contains(database.storeObject.name))
                         db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
                     else
                         reject({errorMessage: 'Existe projeto com esse nome.'});
                 }
-                else if(database.mode == DatabaseMode.Edit){
+                else if(database.mode == Mode.Edit){
                     db.deleteObjectStore(database.storeObject.oldName);
                     if(!db.objectStoreNames.contains(database.storeObject.name))
                         db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
