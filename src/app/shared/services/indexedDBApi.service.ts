@@ -58,10 +58,20 @@ export class IndexedDBApiService {
     }
 
     add(data: IndexedDBObject) {
-        const db = data.database;
-        const transaction = db.transaction([data.objectStoreName], 'readwrite');
-        const objectStore = transaction.objectStore(data.objectStoreName);
-        objectStore.add(data.ObjectStore);
+        return new Promise((resolve, reject) => {
+            const db = data.database;
+            const transaction = db.transaction([data.objectStoreName], 'readwrite');
+            const objectStore = transaction.objectStore(data.objectStoreName);
+            const request = objectStore.add(data.ObjectStore);
+            
+            request.onsuccess = (event:any) => {
+                resolve(event.target.result)
+            }
+
+            request.onerror = event => {
+                alert('Ocorreu um erro na inserção')
+            }
+        })
     }
     
     put(data: IndexedDBObject){

@@ -104,8 +104,12 @@ export class AppComponent implements OnInit{
     }
 
     if(this.mode == Mode.Insert){
-      this.indexedDBApiService.add(saveObjectStore);
-      this.tasks.push(event);
+      this.indexedDBApiService
+        .add(saveObjectStore)
+        .then(key => {
+          event.id = Number(key);
+          this.tasks.push(event);
+        });
     }else if(this.mode == Mode.Edit){
       this.indexedDBApiService.put(saveObjectStore);
       const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
