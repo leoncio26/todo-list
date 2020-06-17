@@ -14,13 +14,18 @@ html, body {
 }
 
 .container-projects {
-    width: 20%;
+    width: 40%;
     margin: 0 0.5rem;
     border: 1px solid rgb(224, 224, 224);
 }
 
 .header-projects {
+    padding: 0.3em;
     background: rgb(100, 100, 100);
+}
+
+.header-projects button{
+    margin: 0.1em;
 }
 
 .header-projects h2 {
@@ -35,11 +40,11 @@ html, body {
 .container-tasks {
     width: 100%;
     background-color: rgb(235, 235, 235);
+    padding: 0.4em;
 }
 
 .container-tasks h3 {
     margin: 0;
-    padding: 0;
 }
 
 .header-projects {
@@ -47,7 +52,24 @@ html, body {
     justify-content: space-between;
 }
 
-.project-name:hover {
+.project {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}
+
+.project button:first-child,
+.tasks button:first-child {
+    margin-right: 0.4em;
+}
+
+.project:hover {
     background-color: silver;
     cursor: pointer;
+}
+
+.tasks {
+    display: flex;
+    justify-content: space-between;
 }
