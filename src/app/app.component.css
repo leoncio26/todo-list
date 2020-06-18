@@ -33,10 +33,6 @@ html, body {
     margin: 0;
 }
 
-.container li {
-    padding: 0.3rem;
-}
-
 .container-tasks {
     width: 100%;
     background-color: rgb(235, 235, 235);
@@ -57,6 +53,7 @@ html, body {
     justify-content: space-between;
     padding: 0;
     margin: 0;
+    position: relative;
 }
 
 .project button:first-child,
@@ -64,12 +61,24 @@ html, body {
     margin-right: 0.4em;
 }
 
-.project:hover {
+.tasks {
+    display: flex;
+    justify-content: space-between;
+}
+
+.project-name {
+    width: 100%;
+    padding: 0.4em;
+}
+
+.project-name:hover {
     background-color: silver;
     cursor: pointer;
 }
 
-.tasks {
-    display: flex;
-    justify-content: space-between;
+.buttons {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }

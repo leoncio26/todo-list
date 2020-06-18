@@ -5,9 +5,13 @@
             <button (click)="newProject()">Novo</button>
         </div>
         <ul>
-            <li *ngFor="let project of projects" class="project" (click)="showTasksOfProject(project)">
-                <span >{{ project.name }}</span>
-                <div>
+            <li *ngFor="let project of projects" class="project">
+                <div class="project-name"
+                    (click)="showTasksOfProject(project)"
+                >
+                    {{ project.name }}
+                </div>
+                <div class="buttons">
                     <button class="btn" (click)="editProject(project)">Editar</button>
                     <button class="btn" (click)="deleteProject(project)">Excluir</button>
                 </div>
