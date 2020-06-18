@@ -22,8 +22,9 @@
         <h3>{{ selectedProjectName }}</h3>
         <ul>
             <li *ngFor="let task of tasks" class="tasks">
-                <span>{{ task.name }}</span>
+                <div>{{ task.name }}</div>
                 <div>
+                    <input type="checkbox">
                     <button (click)="editTask(task)">Editar</button>
                     <button (click)="excluirTask(task)">Excluir</button>
                 </div>
