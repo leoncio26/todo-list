@@ -69,14 +69,14 @@ html, body {
 
 .project-name {
     width: 100%;
-    padding: 0.4em;
+    padding: 0.6em;
     border: 1px solid transparent;
 }
 
 .project-name:hover {
     cursor: pointer;
-    border-bottom: 1px solid silver;
-    box-shadow: 0 1px 4px #b1b1b1;
+    border-bottom: 1px solid rgb(209, 209, 209);
+    box-shadow: 0 1px 4px #dddddd;
 }
 
 .buttons {
@@ -94,11 +94,13 @@ html, body {
 }
 
 .btn:hover {
-    border: 1px solid silver;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    color: rgb(1, 118, 228);
+    box-shadow: 0 1px 1px rgb(214, 214, 214);
 }
 
 .icon {
     width: 16px;
-    height: 16px;
+    height: 100%;
     padding: 2px;
 }
