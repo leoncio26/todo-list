@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ProjectFormComponent } from './forms/project-form/project-form.component';
 import { TaskFormComponent } from './forms/task-form/task-form.component';
 import { BasicformComponent } from './forms/basic-form/basic-form.component';
+import { IconsModule } from './shared/icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BasicformComponent } from './forms/basic-form/basic-form.component';
   ],
   imports: [
     ReactiveFormsModule,
-    BrowserModule
+    BrowserModule,
+    IconsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

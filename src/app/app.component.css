@@ -16,12 +16,13 @@ html, body {
 .container-projects {
     width: 40%;
     margin: 0 0.5rem;
-    border: 1px solid rgb(224, 224, 224);
+    border: 1px solid rgb(209, 209, 209);
 }
 
 .header-projects {
     padding: 0.3em;
-    background: rgb(100, 100, 100);
+    background: rgb(223, 223, 223);
+    border-bottom: 1px solid rgb(168, 168, 168);
 }
 
 .header-projects button{
@@ -69,11 +70,13 @@ html, body {
 .project-name {
     width: 100%;
     padding: 0.4em;
+    border: 1px solid transparent;
 }
 
 .project-name:hover {
-    background-color: silver;
     cursor: pointer;
+    border-bottom: 1px solid silver;
+    box-shadow: 0 1px 4px #b1b1b1;
 }
 
 .buttons {
@@ -81,4 +84,21 @@ html, body {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+}
+
+
+.btn {
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.btn:hover {
+    border: 1px solid silver;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    padding: 2px;
 }

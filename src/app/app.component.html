@@ -2,7 +2,7 @@
     <div class="container-projects">
         <div class="header-projects">
             <h2>Projetos</h2>
-            <button (click)="newProject()">Novo</button>
+            <button class="btn" (click)="newProject()"><i-feather name="plus" class="icon"></i-feather></button>
         </div>
         <ul>
             <li *ngFor="let project of projects" class="project">
@@ -12,8 +12,8 @@
                     {{ project.name }}
                 </div>
                 <div class="buttons">
-                    <button class="btn" (click)="editProject(project)">Editar</button>
-                    <button class="btn" (click)="deleteProject(project)">Excluir</button>
+                    <button class="btn" (click)="editProject(project)"><i-feather name="edit2" class="icon"></i-feather></button>
+                    <button class="btn" (click)="deleteProject(project)"><i-feather name="trash2" class="icon"></i-feather></button>
                 </div>
             </li>
         </ul>
@@ -25,12 +25,12 @@
                 <div>{{ task.name }}</div>
                 <div>
                     <input type="checkbox">
-                    <button (click)="editTask(task)">Editar</button>
-                    <button (click)="excluirTask(task)">Excluir</button>
+                    <button (click)="editTask(task)" class="btn"><i-feather name="edit2" class="icon"></i-feather></button>
+                    <button (click)="excluirTask(task)" class="btn"><i-feather name="trash2" class="icon"></i-feather></button>
                 </div>
             </li>
             
-            <button (click)="newTask()">Nova tarefa</button>
+            <button class="btn" (click)="newTask()"><i-feather name="plus" class="icon"></i-feather></button>
         </ul>
     </div>
 </div>
