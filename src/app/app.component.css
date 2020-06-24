@@ -70,10 +70,13 @@ html, body {
 .project-name {
     width: 100%;
     padding: 0.6em;
-    border: 1px solid transparent;
 }
 
-.project-name:hover {
+.project {
+    border-bottom: 1px solid transparent;
+}
+
+.project:hover {
     cursor: pointer;
     border-bottom: 1px solid rgb(209, 209, 209);
     box-shadow: 0 1px 4px #dddddd;
@@ -94,9 +97,7 @@ html, body {
 }
 
 .btn:hover {
-    border-bottom: 1px solid rgb(216, 216, 216);
     color: rgb(1, 118, 228);
-    box-shadow: 0 1px 1px rgb(214, 214, 214);
 }
 
 .icon {
