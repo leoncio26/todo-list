@@ -21,8 +21,8 @@ html, body {
 
 .header-projects {
     padding: 0.3em;
-    background: rgb(223, 223, 223);
-    border-bottom: 1px solid rgb(168, 168, 168);
+    background: rgb(245, 245, 245);
+    border-bottom: 1px solid rgb(196, 196, 196);
 }
 
 .header-projects button{
@@ -36,7 +36,6 @@ html, body {
 
 .container-tasks {
     width: 100%;
-    background-color: rgb(235, 235, 235);
     padding: 0.4em;
 }
 
