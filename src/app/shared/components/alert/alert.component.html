@@ -1,0 +1,8 @@
+<div class="container" *ngIf="isVisible">
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  <div class="buttons">
+    <button *ngIf="confirmButton" (click)="onConfirm()">{{ confirmButtonText }}</button>
+    <button *ngIf="cancelButton" (click)="onCancel()">{{ cancelButtonText }}</button>
+  </div>
+</div>

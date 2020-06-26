@@ -7,13 +7,15 @@ import { ProjectFormComponent } from './forms/project-form/project-form.componen
 import { TaskFormComponent } from './forms/task-form/task-form.component';
 import { BasicformComponent } from './forms/basic-form/basic-form.component';
 import { IconsModule } from './shared/icons/icons.module';
+import { AlertComponent } from './shared/components/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectFormComponent,
     TaskFormComponent,
-    BasicformComponent
+    BasicformComponent,
+    AlertComponent
   ],
   imports: [
     ReactiveFormsModule,

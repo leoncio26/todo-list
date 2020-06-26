@@ -48,3 +48,13 @@
     (save)="saveTask($event)"
     (hideForm)="hideForm()">
 </app-task-form>
+
+<app-alert
+    title = "Alerta"
+    message="Você tem certeza que quer excluir?"
+    confirmButton="true"
+    cancelButton="true"
+    confirmButtonText="Sim"
+    cancelButtonText="Não"
+    [isVisible]="isVisibleAlert"
+></app-alert>

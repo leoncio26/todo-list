@@ -23,6 +23,7 @@ export class AppComponent implements OnInit{
   oldProjectName: string;
   mode: Mode;
   selectedProjectName: string;
+  isVisibleAlert: boolean;
 
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
@@ -63,7 +64,12 @@ export class AppComponent implements OnInit{
 
   deleteProject(event: Project){
     this.mode = Mode.Delete;
-    this.saveProject(event);
+    this.isVisibleAlert = true;
+    this.selectedProject = event;
+  }
+
+  deletedProject(){
+    this.saveProject(this.selectedProject);
   }
 
   saveProject(event: Project){
@@ -127,16 +133,21 @@ export class AppComponent implements OnInit{
   }
 
   excluirTask(event: Task){
+    this.isVisibleAlert = true;
+    this.selectedTask = event;
+  }
+
+  deletedTask(){
     const indexedDBObject: IndexedDBObject = {
       database: this.database,
       objectStoreName: this.selectedProjectName,
-      ObjectStore: event
+      ObjectStore: this.selectedTask
     }
     this.indexedDBApiService.delete(indexedDBObject)
       .then(r => {
-        const id = this.tasks.findIndex(t => t.id == event.id);
+        const id = this.tasks.findIndex(t => t.id == this.selectedTask.id);
         if(id != -1) this.tasks.splice(id, 1);
-      });
+    });
   }
 
   showTasksOfProject(event: Project) {
