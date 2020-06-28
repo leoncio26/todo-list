@@ -14,6 +14,7 @@
 .tasks {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .buttons {
@@ -38,4 +39,8 @@
   width: 16px;
   height: 100%;
   padding: 2px;
+}
+
+.task-completed {
+  background: #28a745;
 }

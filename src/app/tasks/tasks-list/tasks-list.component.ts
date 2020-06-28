@@ -38,24 +38,10 @@ export class TasksListComponent implements OnInit {
   }
 
   saveTask(event: Task) {
-    /*const saveObjectStore: IndexedDBObject = {
-      database: this.database,
-      objectStoreName: this.selectedProjectName,
-      ObjectStore: event
-    }*/
-
+    if(event.status === undefined) event.status = false;
     if(this.mode == Mode.Insert){
-      /*this.indexedDBApiService
-        .add(saveObjectStore)
-        .then(key => {
-          event.id = Number(key);
-          this.tasks.push(event);
-        });*/
       this.indexedDBProjectService.postTask(this.selectedProjectName, event).then(task => this.tasks.push(task));
     }else if(this.mode == Mode.Edit){
-      /*this.indexedDBApiService.put(saveObjectStore);
-      const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
-      this.tasks[searchTaskId] = event;*/
       this.indexedDBProjectService.putTask(this.selectedProjectName, event);
       const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
       this.tasks[searchTaskId] = event;
@@ -100,5 +86,11 @@ export class TasksListComponent implements OnInit {
 
   onCanceled(){
     this.isVisibleAlert = false;
+  }
+
+  changeTaskStatus(event: Task){
+    event.status = !event.status;
+    this.mode = Mode.Edit;
+    this.saveTask(event);
   }
 }
