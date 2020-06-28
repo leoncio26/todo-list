@@ -22,7 +22,11 @@ export class IndexedDBApiService {
                         const objectStore = db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
                         objectStore.createIndex('project-info', 'dataCriacao', { unique: false });
 
-                        objectStore.add({dataCriacao: new Date(), dataConclusao: new Date()})
+                        objectStore.add(
+                            {
+                                dataCriacao: new Date(), 
+                                dataConclusao: database.storeObject.conclusionDate ? database.storeObject.conclusionDate : new Date()
+                            });
                     }
                     else
                         reject({errorMessage: 'Existe projeto com esse nome.'});

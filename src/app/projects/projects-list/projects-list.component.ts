@@ -28,33 +28,23 @@ export class ProjectsListComponent implements OnInit {
   constructor(private indexedDBApiService: IndexedDBApiService, private indexedDBProjectService: IndexedDBProjectService) { }
 
   ngOnInit(): void {
-    /*this.selectedProjectName = 'Tarefas do projeto';
-    this.selectedProject = {name: ''}
-    const database: Database = {
-      name: 'Projects'
-    }
-
-    this.indexedDBApiService.openDatabase(database).then((db: IDBDatabase) => {
-      this.database = db;
-
-      const projetctsByObjectStoresNames = Array.from(this.database.objectStoreNames);
-      
-      projetctsByObjectStoresNames.forEach(name => {
-        this.projects.push({name});
-      });
-    })*/
-
-    this.selectedProject = {name: ''}
-    this.fields = [{
-      name: 'name',
-      label: 'Nome'
-    }]
+    this.selectedProject = {name: '', conclusionDate: ''}
+    this.fields = [
+      {
+        name: 'name',
+        label: 'Nome'
+      },
+      {
+        name: 'conclusionDate',
+        label: 'Data de finalização'
+      },
+    ]
 
     this.title = 'Novo projeto';
 
-    this.indexedDBProjectService.getAll('Projects').then(response => {
-      this.projects = response})
-      .catch((e) => alert(e));
+    this.indexedDBProjectService.getAll('Projects').then(projects => {
+      this.projects = projects
+    }).catch((e) => alert(e));
   }
 
   newProject(): void{
@@ -69,26 +59,6 @@ export class ProjectsListComponent implements OnInit {
       storeObject: event,
       mode: this.mode
     }
-
-    /*database.version = this.database.version + 1;
-    this.database.close();
-    
-    this.indexedDBApiService.openDatabase(database)
-      .then((db:IDBDatabase) => {
-        this.database = db;
-        if(this.mode == Mode.Insert){
-          this.projects.push(event);
-        }else if(this.mode == Mode.Edit){
-          const deleteNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
-          if(deleteNameProjectIndex != -1) this.projects[deleteNameProjectIndex].name = event.name;
-        }else{
-          const deleteNameProjectIndex = this.projects.findIndex(p => p.name == event.name);
-          if(deleteNameProjectIndex != -1) this.projects.splice(deleteNameProjectIndex, 1);
-        }
-      })
-      .catch(error => {
-        alert(error.errorMessage);
-      });*/
 
     this.indexedDBProjectService.post(database).then(() => {
       if(this.mode == Mode.Insert){
@@ -125,20 +95,12 @@ export class ProjectsListComponent implements OnInit {
   showTasksOfProject(event: Project): void {
     this.selectedProject = event;
     this.selectedProjectName = event.name;
-    /*const indexedDBObject: IndexedDBObject = {
-      database: this.database,
-      objectStoreName: this.selectedProjectName
-    }
-
-    this.indexedDBApiService.getAll(indexedDBObject).then((tasks: any) => {
-      this.tasks = tasks;
-    });*/
 
     this.indexedDBProjectService.getTasksByProject(this.selectedProjectName).then(tasks => this.tasks = tasks);
   }
 
   hideForm(){
-    this.selectedProject = {name: ''};
+    this.selectedProject = {name: '', conclusionDate: ''};
     this.showProjectForm = false;
   }
 
