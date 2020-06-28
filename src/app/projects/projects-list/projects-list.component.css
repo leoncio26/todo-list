@@ -1,0 +1,76 @@
+.container-projects {
+  width: 500px;
+  margin: 0 0.5rem;
+  border: 1px solid rgb(209, 209, 209);
+}
+
+.header-projects {
+  padding: 0.3em;
+  background: rgb(245, 245, 245);
+  border-bottom: 1px solid rgb(196, 196, 196);
+}
+
+.header-projects button{
+  margin: 0.1em;
+}
+
+.header-projects h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.header-projects {
+  display: flex;
+  justify-content: space-between;
+}
+
+.project {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.project button:first-child {
+  margin-right: 0.4em;
+}
+
+.project-name {
+  width: 100%;
+  padding: 0.6em;
+}
+
+.project {
+  border-bottom: 1px solid transparent;
+}
+
+.project:hover {
+  cursor: pointer;
+  border-bottom: 1px solid rgb(209, 209, 209);
+  box-shadow: 0 1px 4px #dddddd;
+}
+
+.buttons {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+.btn {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:hover {
+  color: rgb(1, 118, 228);
+}
+
+.icon {
+  width: 16px;
+  height: 100%;
+  padding: 2px;
+}

@@ -1,24 +1,6 @@
 <div class="container">
-    <div class="container-projects">
-        <div class="header-projects">
-            <h2>Projetos</h2>
-            <button class="btn" (click)="newProject()"><i-feather name="plus" class="icon"></i-feather></button>
-        </div>
-        <ul>
-            <li *ngFor="let project of projects" class="project">
-                <div class="project-name"
-                    (click)="showTasksOfProject(project)"
-                >
-                    {{ project.name }}
-                </div>
-                <div class="buttons">
-                    <button class="btn" (click)="editProject(project)"><i-feather name="edit2" class="icon"></i-feather></button>
-                    <button class="btn" (click)="deleteProject(project)"><i-feather name="trash2" class="icon"></i-feather></button>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="container-tasks">
+    <app-projects-list class="project-list"></app-projects-list>
+    <!--<div class="container-tasks">
         <h3>{{ selectedProjectName }}</h3>
         <ul>
             <li *ngFor="let task of tasks" class="tasks">
@@ -32,10 +14,10 @@
             
             <button class="btn" (click)="newTask()"><i-feather name="plus" class="icon"></i-feather></button>
         </ul>
-    </div>
+    </div>-->
 </div>
 
-<app-project-form 
+<!--<app-project-form 
     *ngIf="showProjectForm"
     [data]="selectedProject"
     (save)="saveProject($event)"
@@ -57,4 +39,4 @@
     confirmButtonText="Sim"
     cancelButtonText="Não"
     [isVisible]="isVisibleAlert"
-></app-alert>
+></app-alert>-->
