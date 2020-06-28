@@ -3,6 +3,8 @@ import { IndexedDBApiService } from './indexedDBApi.service';
 import { Project } from 'src/app/models/project';
 import { Database } from 'src/app/models/database';
 import { Mode } from 'src/app/models/enums/mode';
+import { Task } from 'src/app/models/task';
+import { IndexedDBObject } from 'src/app/models/indexedDBObject';
 
 @Injectable()
 export class IndexedDBProjectService{
@@ -29,6 +31,19 @@ export class IndexedDBProjectService{
     })
   }
 
+  getTasksByProject(projectName: string): Promise<Task[]>{
+    return new Promise((resolve, reject) => {
+      const indexedDBObject: IndexedDBObject = {
+        database: this.database,
+        objectStoreName: projectName
+      }
+
+      this.indexedDBApiService.getAll(indexedDBObject).then((tasks: any) => {
+        resolve(tasks);
+      });
+    });
+  }
+
   post(database: Database): Promise<Project[]>{
     return new Promise((resolve, reject) => {
       database.version = this.database.version + 1;
@@ -43,5 +58,30 @@ export class IndexedDBProjectService{
           alert(error.errorMessage);
         });
       })
+  }
+
+  postTask(projectName: string, task: Task): Promise<Task>{
+    const saveObjectStore: IndexedDBObject = {
+      database: this.database,
+      objectStoreName: projectName,
+      ObjectStore: task
+    }
+    return new Promise((resolve, reject) => {
+      this.indexedDBApiService
+        .add(saveObjectStore)
+        .then(key => {
+          task.id = Number(key);
+          resolve(task);
+        });
+    })
+  }
+
+  putTask(projectName: string, task: Task): void{
+    const saveObjectStore: IndexedDBObject = {
+      database: this.database,
+      objectStoreName: projectName,
+      ObjectStore: task
+    }
+    this.indexedDBApiService.put(saveObjectStore);
   }
 }

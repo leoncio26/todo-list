@@ -1,29 +1,28 @@
-<div class="container-projects">
-  <div class="header-projects">
-      <h2>Projetos</h2>
-      <button class="btn" (click)="newProject()"><i-feather name="plus" class="icon"></i-feather></button>
-  </div>
-  <ul>
-      <li *ngFor="let project of projects" class="project">
-          <div class="project-name"
-              (click)="showTasksOfProject(project)"
-          >
-              {{ project.name }}
-          </div>
-          <div class="buttons">
-              <button class="btn" (click)="editProject(project)"><i-feather name="edit2" class="icon"></i-feather></button>
-              <button class="btn" (click)="deleteProject(project)"><i-feather name="trash2" class="icon"></i-feather></button>
-          </div>
-      </li>
-  </ul>
+<div class="container">
+    <div class="container-projects">
+        <div class="header-projects">
+            <h2>Projetos</h2>
+            <button class="btn" (click)="newProject()"><i-feather name="plus" class="icon"></i-feather></button>
+        </div>
+        <ul>
+            <li *ngFor="let project of projects" class="project">
+                <div class="project-name"
+                    (click)="showTasksOfProject(project)"
+                >
+                    {{ project.name }}
+                </div>
+                <div class="buttons">
+                    <button class="btn" (click)="editProject(project)"><i-feather name="edit2" class="icon"></i-feather></button>
+                    <button class="btn" (click)="deleteProject(project)"><i-feather name="trash2" class="icon"></i-feather></button>
+                </div>
+            </li>
+        </ul>
+      </div>
+      <app-tasks-list 
+        [tasks]="tasks"
+        [selectedProjectName]="selectedProjectName">
+    </app-tasks-list>
 </div>
-
-<!--<app-project-form 
-    *ngIf="showProjectForm"
-    [data]="selectedProject"
-    (save)="saveProject($event)"
-    (hideForm)="hideForm()">
-</app-project-form>-->
 
 <app-basic-form 
     *ngIf="showProjectForm"
@@ -31,6 +30,5 @@
     [fields]="fields"
     [data]="selectedProject"
     (onSave)="saveProject($event)"
-    (onCanceled)="hideForm()"
-  >
+    (onCanceled)="hideForm()">
 </app-basic-form>

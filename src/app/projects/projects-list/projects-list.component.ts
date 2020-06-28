@@ -16,7 +16,6 @@ import { Field } from 'src/app/models/field';
 export class ProjectsListComponent implements OnInit {
   projects: Array<Project> = [];
   showProjectForm: boolean = false;
-  database: IDBDatabase;
   selectedProject: Project;
   selectedProjectName: string;
   oldProjectName: string;
@@ -125,14 +124,16 @@ export class ProjectsListComponent implements OnInit {
   showTasksOfProject(event: Project): void {
     this.selectedProject = event;
     this.selectedProjectName = event.name;
-    const indexedDBObject: IndexedDBObject = {
+    /*const indexedDBObject: IndexedDBObject = {
       database: this.database,
       objectStoreName: this.selectedProjectName
     }
 
     this.indexedDBApiService.getAll(indexedDBObject).then((tasks: any) => {
-      this.tasks = tasks
-    });
+      this.tasks = tasks;
+    });*/
+
+    this.indexedDBProjectService.getTasksByProject(this.selectedProjectName).then(tasks => this.tasks = tasks);
   }
 
   hideForm(){

@@ -3,22 +3,21 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ProjectFormComponent } from './forms/project-form/project-form.component';
-import { TaskFormComponent } from './forms/task-form/task-form.component';
 import { IconsModule } from './shared/icons/icons.module';
 import { AlertComponent } from './shared/components/alert/alert.component';
 import { ProjectsModule } from './projects/projects-list/projects.module';
+import { FormsModule } from './forms/forms.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TaskFormComponent,
     AlertComponent
   ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
     IconsModule,
+    FormsModule,
     ProjectsModule
   ],
   providers: [],

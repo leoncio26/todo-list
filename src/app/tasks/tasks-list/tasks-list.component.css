@@ -1,0 +1,41 @@
+.container-tasks {
+  width: 500px;
+  padding: 0.4em;
+}
+
+.container-tasks h3 {
+  margin: 0;
+}
+
+.tasks button:first-child {
+  margin-right: 0.4em;
+}
+
+.tasks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+.btn {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:hover {
+  color: rgb(1, 118, 228);
+}
+
+.icon {
+  width: 16px;
+  height: 100%;
+  padding: 2px;
+}

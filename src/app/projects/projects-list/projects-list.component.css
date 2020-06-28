@@ -1,3 +1,7 @@
+.container{
+  display: flex;
+}
+
 .container-projects {
   width: 500px;
   margin: 0 0.5rem;
