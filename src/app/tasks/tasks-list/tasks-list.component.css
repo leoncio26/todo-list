@@ -1,6 +1,5 @@
 .container-tasks {
-  width: 500px;
-  padding: 0.4em;
+  width: 100%;
 }
 
 .container-tasks h3 {
@@ -42,5 +41,21 @@
 }
 
 .task-completed {
-  background: #28a745;
+  background: #88da9b;
+}
+
+.divisions-container {
+  display: flex;
+}
+
+.division {
+  width: 450px;
+  margin-right: 1.5em;
+  border: 1px solid silver;
+}
+
+.division h5 {
+  margin: 0;
+  padding: 1em 0;
+  background: silver;
 }

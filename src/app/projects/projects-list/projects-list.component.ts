@@ -3,7 +3,6 @@ import { Project } from 'src/app/models/project';
 import { Mode } from 'src/app/models/enums/mode';
 import { Database } from 'src/app/models/database';
 import { IndexedDBApiService } from 'src/app/shared/services/indexedDBApi.service';
-import { IndexedDBObject } from 'src/app/models/indexedDBObject';
 import { Task } from 'src/app/models/task';
 import { IndexedDBProjectService } from 'src/app/shared/services/indexedDBProject.service';
 import { Field } from 'src/app/models/field';

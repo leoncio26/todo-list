@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Task } from 'src/app/models/task';
 import { Mode } from 'src/app/models/enums/mode';
 import { Field } from 'src/app/models/field';
@@ -9,8 +9,8 @@ import { IndexedDBProjectService } from 'src/app/shared/services/indexedDBProjec
   templateUrl: './tasks-list.component.html',
   styleUrls: ['./tasks-list.component.css']
 })
-export class TasksListComponent implements OnInit {
-  @Input() tasks: Array<Task> = [];
+export class TasksListComponent implements OnInit, OnChanges {
+  @Input() tasks: Task[];
   @Input() selectedProjectName: string;
 
   showTaskForm: boolean = false;
@@ -19,8 +19,15 @@ export class TasksListComponent implements OnInit {
   isVisibleAlert: boolean;
   title: string;
   fields: Field[];
+
+  tasksAFazer: Task[] = [];
+  tasksConcluidas: Task[] = [];
   
   constructor(private indexedDBProjectService: IndexedDBProjectService) { }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    this.groupTasks();
+  }
 
   ngOnInit(): void {
     this.title = 'Nova tarefa';
@@ -40,11 +47,15 @@ export class TasksListComponent implements OnInit {
   saveTask(event: Task) {
     if(event.status === undefined) event.status = false;
     if(this.mode == Mode.Insert){
-      this.indexedDBProjectService.postTask(this.selectedProjectName, event).then(task => this.tasks.push(task));
+      this.indexedDBProjectService.postTask(this.selectedProjectName, event).then(task => {
+        this.tasks.push(task);
+        this.groupTasks();
+      });
     }else if(this.mode == Mode.Edit){
       this.indexedDBProjectService.putTask(this.selectedProjectName, event);
       const searchTaskId = this.tasks.findIndex(t => t.id === event.id);
       this.tasks[searchTaskId] = event;
+      this.groupTasks();
     }
     
     this.hideForm();
@@ -75,7 +86,10 @@ export class TasksListComponent implements OnInit {
     });*/
     this.indexedDBProjectService.deleteTask(this.selectedProjectName, this.selectedTask).then(r => {
       const id = this.tasks.findIndex(t => t.id == this.selectedTask.id);
-      if(id != -1) this.tasks.splice(id, 1);
+      if(id != -1) {
+        this.tasks.splice(id, 1);
+        this.groupTasks();
+      }
     })
     this.isVisibleAlert = false;
   }
@@ -92,5 +106,17 @@ export class TasksListComponent implements OnInit {
     event.status = !event.status;
     this.mode = Mode.Edit;
     this.saveTask(event);
+  }
+
+  groupTasks(){
+    this.tasksAFazer = [];
+    this.tasksConcluidas = [];
+    this.tasks.forEach(task => {
+      if(task.status){
+        this.tasksConcluidas.push(task);
+      }else{
+        this.tasksAFazer.push(task);
+      }
+    })
   }
 }

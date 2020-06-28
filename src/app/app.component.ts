@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { IndexedDBApiService } from './shared/services/indexedDBApi.service';
-import { Mode } from './models/enums/mode';
 
 @Component({
   selector: 'app-root',
