@@ -84,4 +84,19 @@ export class IndexedDBProjectService{
     }
     this.indexedDBApiService.put(saveObjectStore);
   }
+
+  deleteTask(projectName: string, task: Task): Promise<any>{
+    const indexedDBObject: IndexedDBObject = {
+      database: this.database,
+      objectStoreName: projectName,
+      ObjectStore: task
+    }
+
+    return new Promise((resolve, reject) => {
+      this.indexedDBApiService.delete(indexedDBObject)
+      .then(r => {
+        resolve(r);
+      });
+    })
+  }
 }

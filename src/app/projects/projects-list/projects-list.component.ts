@@ -119,6 +119,7 @@ export class ProjectsListComponent implements OnInit {
 
   deletedProject(): void{
     this.saveProject(this.selectedProject);
+    this.isVisibleAlert = false;
   }
 
   showTasksOfProject(event: Project): void {
@@ -139,6 +140,10 @@ export class ProjectsListComponent implements OnInit {
   hideForm(){
     this.selectedProject = {name: ''};
     this.showProjectForm = false;
+  }
+
+  onCanceled(){
+    this.isVisibleAlert = false;
   }
 
 }

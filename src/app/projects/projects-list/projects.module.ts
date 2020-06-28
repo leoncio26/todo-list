@@ -5,6 +5,7 @@ import { IconsModule } from 'src/app/shared/icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from 'src/app/forms/forms.module';
 import { TasksModule } from 'src/app/tasks/tasks.module';
+import { AlertModule } from 'src/app/shared/components/alert/alert.module';
 
 @NgModule({
   declarations: [ProjectsListComponent],
@@ -12,7 +13,8 @@ import { TasksModule } from 'src/app/tasks/tasks.module';
     CommonModule,
     IconsModule,
     FormsModule,
-    TasksModule
+    TasksModule,
+    AlertModule
   ],
   exports: [ProjectsListComponent],
   providers: [IndexedDBProjectService]

@@ -76,7 +76,29 @@ export class TasksListComponent implements OnInit {
     this.selectedTask = event;
   }
 
+  deletedTask(){
+    /*const indexedDBObject: IndexedDBObject = {
+      database: this.database,
+      objectStoreName: this.selectedProjectName,
+      ObjectStore: this.selectedTask
+    }
+    this.indexedDBApiService.delete(indexedDBObject)
+      .then(r => {
+        const id = this.tasks.findIndex(t => t.id == this.selectedTask.id);
+        if(id != -1) this.tasks.splice(id, 1);
+    });*/
+    this.indexedDBProjectService.deleteTask(this.selectedProjectName, this.selectedTask).then(r => {
+      const id = this.tasks.findIndex(t => t.id == this.selectedTask.id);
+      if(id != -1) this.tasks.splice(id, 1);
+    })
+    this.isVisibleAlert = false;
+  }
+
   hideForm(){
     this.showTaskForm = false;
+  }
+
+  onCanceled(){
+    this.isVisibleAlert = false;
   }
 }

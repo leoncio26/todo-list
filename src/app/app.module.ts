@@ -10,8 +10,7 @@ import { FormsModule } from './forms/forms.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AlertComponent
+    AppComponent
   ],
   imports: [
     ReactiveFormsModule,

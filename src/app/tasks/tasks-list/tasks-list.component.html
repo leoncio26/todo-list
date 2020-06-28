@@ -22,3 +22,15 @@
     (onSave)="saveTask($event)"
     (onCanceled)="hideForm()">
 </app-basic-form>
+
+<app-alert
+    title = "Alerta"
+    message="Você tem certeza que quer excluir?"
+    confirmButton="true"
+    cancelButton="true"
+    confirmButtonText="Sim"
+    cancelButtonText="Não"
+    [isVisible]="isVisibleAlert"
+    (onConfirmed)="deletedTask()"
+    (onCanceled)="onCanceled()"
+></app-alert>
