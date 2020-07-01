@@ -11,11 +11,14 @@ export class IndexedDBProjectService{
   database: IDBDatabase;
   constructor(private indexedDBApiService: IndexedDBApiService){}
 
-  getAll(databaseName: string): Promise<Project[]>{
+  initializeDB(database: Database): Promise<Project[]>{
     return new Promise((resolve, reject) => {
-      const database: Database = {
-        name: databaseName
-      }
+      this.getAll(database).then(projects => resolve(projects)).catch(e => reject(e));
+    })
+  }
+
+  getAll(database: Database): Promise<Project[]>{
+    return new Promise((resolve, reject) => {
       this.indexedDBApiService.openDatabase(database).then((db: IDBDatabase) => {
         this.database = db;
   

@@ -41,7 +41,11 @@ export class ProjectsListComponent implements OnInit {
 
     this.title = 'Novo projeto';
 
-    this.indexedDBProjectService.getAll('Projects').then(projects => {
+    const database: Database = {
+      name: 'Projects'
+    }
+
+    this.indexedDBProjectService.getAll(database).then(projects => {
       this.projects = projects
     }).catch((e) => alert(e));
   }
@@ -56,7 +60,19 @@ export class ProjectsListComponent implements OnInit {
     const database: Database = {
       name: 'Projects',
       storeObject: event,
-      mode: this.mode
+      mode: Mode.Insert,
+      indexes: [
+        {
+          name: 'project-info',
+          keyPath: 'dataCriacao',
+          options: { unique: false }
+        },
+        {
+          name: 'task',
+          keyPath: 'name',
+          options: { unique: false }
+        }
+      ]
     }
 
     this.indexedDBProjectService.post(database).then(() => {

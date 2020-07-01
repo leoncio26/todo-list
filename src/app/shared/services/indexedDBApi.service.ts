@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Database } from '../../models/database';
 import { Mode } from 'src/app/models/enums/mode';
 import { IndexedDBObject } from 'src/app/models/indexedDBObject';
+import { Index } from 'src/app/models';
 
 @Injectable({providedIn: "root"})
 export class IndexedDBApiService {
@@ -15,12 +16,20 @@ export class IndexedDBApiService {
             open.onupgradeneeded = (event: any) => {
                 const db: IDBDatabase = event.target.result;
                 
-                if(!database.storeObject.name) return;
+                //if(!database.storeObject.name) return;
 
                 if(database.mode == Mode.Insert) {
                     if(!db.objectStoreNames.contains(database.storeObject.name)){
                         const objectStore = db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
-                        objectStore.createIndex('project-info', 'dataCriacao', { unique: false });
+                        //objectStore.createIndex('project-info', 'dataCriacao', { unique: false });
+
+                        if(database.indexes){
+                            if(database.indexes.length){
+                                database.indexes.forEach((index: Index) => {
+                                    objectStore.createIndex(index.name, index.keyPath, index.options);
+                                })
+                            }
+                        }
 
                         objectStore.add(
                             {
@@ -62,6 +71,28 @@ export class IndexedDBApiService {
             request.onerror = (event: any) => {
                 reject(event.error);
             }
+        })
+    }
+
+    getAllByIndex(data: IndexedDBObject, indexName: string){
+        let response = [];
+        return new Promise((resolve, reject) => {
+            const db = data.database;
+            const transaction = db.transaction(data.objectStoreName);
+            const objectStore = transaction.objectStore(data.objectStoreName);
+            const index = objectStore.index(indexName);
+            const openCursor = index.openCursor();
+
+            openCursor.onsuccess = (event: any) => {
+                const cursor = event.target.result;
+                if(cursor){
+                    response.push(cursor.value);
+                    cursor.continue();
+                }
+                resolve(response);
+            }
+
+            openCursor.onerror = (error: any) => reject(error);
         })
     }
 
