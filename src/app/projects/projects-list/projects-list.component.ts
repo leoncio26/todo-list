@@ -60,7 +60,7 @@ export class ProjectsListComponent implements OnInit {
     const database: Database = {
       name: 'Projects',
       storeObject: event,
-      mode: Mode.Insert,
+      mode: this.mode,
       indexes: [
         {
           name: 'project-info',
@@ -75,17 +75,22 @@ export class ProjectsListComponent implements OnInit {
       ]
     }
 
-    this.indexedDBProjectService.post(database).then(() => {
-      if(this.mode == Mode.Insert){
-        this.projects.push(event);
-      }else if(this.mode == Mode.Edit){
-        const deleteNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
-        if(deleteNameProjectIndex != -1) this.projects[deleteNameProjectIndex].name = event.name;
-      }else{
-        const deleteNameProjectIndex = this.projects.findIndex(p => p.name == event.name);
-        if(deleteNameProjectIndex != -1) this.projects.splice(deleteNameProjectIndex, 1);
-      }
-    });
+    if(this.mode === Mode.Edit){
+      this.indexedDBProjectService.deleteStore(database);
+      const deleteNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
+      if(deleteNameProjectIndex != -1) this.projects[deleteNameProjectIndex].name = event.name;
+    }else{
+      this.indexedDBProjectService.post(database).then(() => {
+        if(this.mode == Mode.Insert){
+          this.projects.push(event);
+        }else{
+          //deleta projeto
+          const deleteNameProjectIndex = this.projects.findIndex(p => p.name == event.name);
+          if(deleteNameProjectIndex != -1) this.projects.splice(deleteNameProjectIndex, 1);
+        }
+      });  
+    }
+
     this.hideForm();
   }
 

@@ -102,4 +102,14 @@ export class IndexedDBProjectService{
       });
     })
   }
+
+  async deleteStore(database: Database){
+    let backupStore = [];
+    await this.getTasksByProject(database.storeObject.oldName).then(objects => backupStore = objects)
+    await this.post(database).then(() => {
+      backupStore.forEach(obj => {
+        this.postTask(database.storeObject.name, obj).then(() => {}).catch(error => alert('Aconteceu um erro no sistema'));
+      })
+    });
+  }
 }

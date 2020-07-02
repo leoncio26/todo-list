@@ -57,7 +57,7 @@ export class IndexedDBApiService {
         });
     }
 
-    getAll(data: IndexedDBObject){
+    getAll(data: IndexedDBObject):Promise<any[]>{
         return new Promise((resolve, reject) => {
             const db = data.database;
             const transaction = db.transaction(data.objectStoreName);
