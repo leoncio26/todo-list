@@ -103,13 +103,46 @@ export class IndexedDBProjectService{
     })
   }
 
-  async deleteStore(database: Database){
+  async editStore(database: Database){
     let backupStore = [];
-    await this.getTasksByProject(database.storeObject.oldName).then(objects => backupStore = objects)
+    await this.getTasksByProject(database.objectStore.oldName).then(objects => backupStore = objects);
     await this.post(database).then(() => {
       backupStore.forEach(obj => {
-        this.postTask(database.storeObject.name, obj).then(() => {}).catch(error => alert('Aconteceu um erro no sistema'));
+        if(obj.hasOwnProperty('id')) delete obj['id'];
+        //this.postTask(database.objectStore.name, obj).then(() => {}).catch(error => alert('Aconteceu um erro no sistema'));
       })
+      this.addRange(database.objectStore.name, backupStore);
+    });
+  }
+
+  addRange(projectName: string, objects: any[]){
+    const saveObjectStore: IndexedDBObject = {
+      database: this.database,
+      objectStoreName: projectName,
+    }
+
+    this.indexedDBApiService.addMultiples(saveObjectStore, objects).then(() => {})
+
+    // objects.forEach(obj => {
+    //   saveObjectStore.ObjectStore = obj;
+    //   this.indexedDBApiService
+    //     .add(saveObjectStore)
+    //     .then(key => {
+    //       console.log(obj);
+    //     });
+    // })
+  }
+
+  getProjectInfo(projectName: string): Promise<Project>{
+    return new Promise((resolve, reject) => {
+      const indexedDBObject: IndexedDBObject = {
+        database: this.database,
+        objectStoreName: projectName
+      }
+
+      this.indexedDBApiService.getByKey(indexedDBObject, 'project-info', 1).then((project: Project) => {
+        resolve(project);
+      });
     });
   }
 }

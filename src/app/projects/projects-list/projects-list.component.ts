@@ -51,6 +51,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   newProject(): void{
+    this.selectedProject = {name: '', conclusionDate: ''}
     this.showProjectForm = true;
     this.mode = Mode.Insert
   }
@@ -59,12 +60,13 @@ export class ProjectsListComponent implements OnInit {
     if(this.mode == Mode.Edit) event.oldName = this.oldProjectName
     const database: Database = {
       name: 'Projects',
-      storeObject: event,
+      objectStore: event,
+      objectStoreKeyPath: 'id',
       mode: this.mode,
       indexes: [
         {
           name: 'project-info',
-          keyPath: 'dataCriacao',
+          keyPath: 'createDate',
           options: { unique: false }
         },
         {
@@ -76,9 +78,15 @@ export class ProjectsListComponent implements OnInit {
     }
 
     if(this.mode === Mode.Edit){
-      this.indexedDBProjectService.deleteStore(database);
-      const deleteNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
-      if(deleteNameProjectIndex != -1) this.projects[deleteNameProjectIndex].name = event.name;
+      this.indexedDBProjectService.editStore(database);
+      const editedNameProjectIndex = this.projects.findIndex(p => p.name == this.oldProjectName);
+      if(editedNameProjectIndex != -1) {
+        this.projects[editedNameProjectIndex].name = event.name;
+        if(this.selectedProject.name === this.oldProjectName) {
+          this.selectedProject.name = event.name;
+          this.selectedProjectName = event.name;
+        }
+      }
     }else{
       this.indexedDBProjectService.post(database).then(() => {
         if(this.mode == Mode.Insert){
@@ -95,10 +103,16 @@ export class ProjectsListComponent implements OnInit {
   }
 
   editProject(event: Project): void{
-    this.selectedProject = event;
-    this.oldProjectName = event.name;
-    this.showProjectForm = true;
-    this.mode = Mode.Edit;
+    this.indexedDBProjectService.getProjectInfo(event.name).then(project => {
+      this.selectedProject = {
+        name: event.name,
+        conclusionDate: project.conclusionDate
+      };
+      this.oldProjectName = event.name;
+      this.showProjectForm = true;
+      this.mode = Mode.Edit;
+    });
+    //this.selectedProject = event;
   }
 
   deleteProject(event: Project): void{

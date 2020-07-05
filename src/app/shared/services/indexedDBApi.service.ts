@@ -19,9 +19,8 @@ export class IndexedDBApiService {
                 //if(!database.storeObject.name) return;
 
                 if(database.mode == Mode.Insert) {
-                    if(!db.objectStoreNames.contains(database.storeObject.name)){
-                        const objectStore = db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
-                        //objectStore.createIndex('project-info', 'dataCriacao', { unique: false });
+                    if(!db.objectStoreNames.contains(database.objectStore.name)){
+                        const objectStore = db.createObjectStore(database.objectStore.name, {keyPath: database.objectStoreKeyPath, autoIncrement: true});
 
                         if(database.indexes){
                             if(database.indexes.length){
@@ -33,21 +32,35 @@ export class IndexedDBApiService {
 
                         objectStore.add(
                             {
-                                dataCriacao: new Date(), 
-                                dataConclusao: database.storeObject.conclusionDate ? database.storeObject.conclusionDate : new Date()
+                                createDate: new Date(), 
+                                conclusionDate: database.objectStore.conclusionDate ? database.objectStore.conclusionDate : new Date()
                             });
                     }
                     else
                         reject({errorMessage: 'Existe projeto com esse nome.'});
                 }
                 else if(database.mode == Mode.Edit){
-                    db.deleteObjectStore(database.storeObject.oldName);
-                    if(!db.objectStoreNames.contains(database.storeObject.name))
-                        db.createObjectStore(database.storeObject.name, {keyPath: 'id', autoIncrement: true});
-                    else
+                    db.deleteObjectStore(database.objectStore.oldName);
+                    if(!db.objectStoreNames.contains(database.objectStore.name)){
+                        const objectStore = db.createObjectStore(database.objectStore.name, {keyPath: database.objectStoreKeyPath, autoIncrement: true});
+
+                        if(database.indexes){
+                            if(database.indexes.length){
+                                database.indexes.forEach((index: Index) => {
+                                    objectStore.createIndex(index.name, index.keyPath, index.options);
+                                })
+                            }
+                        }
+
+                        /*objectStore.add(
+                            {
+                                createDate: new Date(), 
+                                conclusionDate: database.objectStore.conclusionDate ? database.objectStore.conclusionDate : new Date()
+                            });*/
+                    }else
                         reject({errorMessage: 'Existe projeto com esse nome.'});
                 }else{
-                    db.deleteObjectStore(database.storeObject.name);
+                    db.deleteObjectStore(database.objectStore.name);
                 }
             }
 
@@ -74,9 +87,9 @@ export class IndexedDBApiService {
         })
     }
 
-    getAllByIndex(data: IndexedDBObject, indexName: string){
-        let response = [];
+    getAllByIndex(data: IndexedDBObject, indexName: string): Promise<any>{
         return new Promise((resolve, reject) => {
+            let response = [];
             const db = data.database;
             const transaction = db.transaction(data.objectStoreName);
             const objectStore = transaction.objectStore(data.objectStoreName);
@@ -96,6 +109,21 @@ export class IndexedDBApiService {
         })
     }
 
+    getByKey(data: IndexedDBObject, indexName: string, key: any){
+        return new Promise((resolve, reject) => {
+            const db = data.database;
+            const transaction = db.transaction(data.objectStoreName);
+            const objectStore = transaction.objectStore(data.objectStoreName);
+            const request = objectStore.get(key);
+
+            request.onsuccess = (event: any) => {
+                resolve(event.target.result);
+            }
+
+            request.onerror = error => reject(error);
+        })
+    }
+
     add(data: IndexedDBObject) {
         return new Promise((resolve, reject) => {
             const db = data.database;
@@ -110,6 +138,20 @@ export class IndexedDBApiService {
             request.onerror = event => {
                 alert('Ocorreu um erro na inserção')
             }
+        })
+    }
+
+    addMultiples(data: IndexedDBObject, objects: any[]){
+        return new Promise((resolve, reject) => {
+            const db = data.database;
+            const transaction = db.transaction([data.objectStoreName], 'readwrite');
+            const objectStore = transaction.objectStore(data.objectStoreName);
+            
+            objects.forEach(obj => {
+                const request = objectStore.add(obj);
+            })
+
+            transaction.oncomplete = () => {}
         })
     }
     

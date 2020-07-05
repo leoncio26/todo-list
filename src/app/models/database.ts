@@ -2,8 +2,9 @@ import { Index } from '.';
 
 export interface Database{
   name: string;
-  storeObject?: any;
+  objectStore?: any;
   version?: number;
   mode?: number;
   indexes?: Index[];
+  objectStoreKeyPath?: any;
 }
