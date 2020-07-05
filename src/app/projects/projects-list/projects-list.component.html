@@ -5,7 +5,7 @@
             <button class="btn" (click)="newProject()"><i-feather name="plus" class="icon"></i-feather></button>
         </div>
         <ul>
-            <li *ngFor="let project of projects" class="project">
+            <li *ngFor="let project of projects" class="project" [ngClass]="{'project-selected': selectedProjectName === project.name}">
                 <div class="project-name"
                     (click)="showTasksOfProject(project)"
                 >

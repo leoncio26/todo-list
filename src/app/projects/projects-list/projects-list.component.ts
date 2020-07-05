@@ -94,7 +94,10 @@ export class ProjectsListComponent implements OnInit {
         }else{
           //deleta projeto
           const deleteNameProjectIndex = this.projects.findIndex(p => p.name == event.name);
-          if(deleteNameProjectIndex != -1) this.projects.splice(deleteNameProjectIndex, 1);
+          if(deleteNameProjectIndex != -1) {
+            this.projects.splice(deleteNameProjectIndex, 1);
+            this.selectedProjectName = '';
+          }
         }
       });  
     }

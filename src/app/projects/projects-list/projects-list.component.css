@@ -78,3 +78,7 @@
   height: 100%;
   padding: 2px;
 }
+
+.project-selected {
+  background: rgb(240, 240, 240);
+}
