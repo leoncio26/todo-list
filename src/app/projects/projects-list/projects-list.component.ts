@@ -23,6 +23,7 @@ export class ProjectsListComponent implements OnInit {
   tasks: Array<Task> = [];
   fields: Field[];
   title: string;
+  alertMessage: string;
   
   constructor(private indexedDBApiService: IndexedDBApiService, private indexedDBProjectService: IndexedDBProjectService) { }
 
@@ -120,8 +121,9 @@ export class ProjectsListComponent implements OnInit {
 
   deleteProject(event: Project): void{
     this.mode = Mode.Delete;
-    this.isVisibleAlert = true;
     this.selectedProject = event;
+    this.alertMessage = `Você tem certeza que quer excluir o projeto <strong>${this.selectedProject.name}</strong>?`;
+    this.isVisibleAlert = true;
   }
 
   deletedProject(): void{
